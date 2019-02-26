@@ -1,0 +1,44 @@
+1.ユーザーモデルを作った
+  $ rails g model User name:string email:string password:string
+    →データベースにユーザーモデル設計
+
+2.ユーザーコントローラーでnewアクションを作る
+  $ rails generate controller Users new
+    →newのページができた
+      ルートを　/singup　に変更した
+
+3.ルートをRESTfulに変更
+    Usersリソース専用のresourcesメソッドを使ってRESTfulなルーティングを利用
+    GET	/users	index	users_path	すべてのユーザーを一覧するページ
+    GET	/users/1	show	user_path(user)	特定のユーザーを表示するページ
+    GET	/users/new	new	new_user_path	ユーザーを新規作成するページ (ユーザー登録)
+    ・POST	/users	create	users_path	ユーザーを作成するアクション
+    GET	/users/1/edit	edit	edit_user_path(user)	id=1のユーザーを編集するページ
+    ・PATCH	/users/1	update	user_path(user)	ユーザーを更新するアクション
+    ・DELETE	/users/1	destroy	user_path(user)	ユーザーを削除するアクション
+
+3.ユーザー情報表示を　showアクションで表示
+
+4.createアクションでユーザー情報をpost
+  createアクションの中では、ユーザーの認証に必要なあらゆる情報をparamsハッシュから簡単に取り出せる
+
+5.sessionsコントローラーを作成
+  →$ rails generate controller Sessions new
+
+6.routeを追加
+  GET	/login	login_path	new	新しいセッションのページ (ログイン)
+  ・POST	/login	login_path	create	新しいセッションの作成 (ログイン)
+  ・DELETE	/logout	logout_path	destroy	セッションの削除 (ログアウト)
+
+7.ログインフォームをつくる
+
+8.createアクションでユーザーをデータベースから見つけてくる
+  → user = User.find_by(email: params[:session][:email].downcase)
+  if user && user.authenticate(params[:session][:password])
+    # ユーザーログイン後にユーザー情報のページにリダイレクトする
+  else
+    flash.now[:danger] = 'Invalid email/password combination'
+    render 'new'
+  end
+
+9.log inメッソド

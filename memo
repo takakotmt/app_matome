@@ -1,0 +1,12 @@
+データ設計
+　User
+    - name :string
+      email :string
+      password :string
+    rails g model User name:string email:string password:string
+
+  Food
+    - title :string
+      comment :string
+      photos :Active Storage
+      tabelog url :string
